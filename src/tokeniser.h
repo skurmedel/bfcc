@@ -27,6 +27,10 @@
 
 #include <stdio.h>
 
+#ifndef NULL
+	#define NULL 0
+#endif
+
 typedef struct tokeniser_t
 {
 	FILE *f;
@@ -45,6 +49,11 @@ typedef enum token_t
 	token_eof
 } token;
 
+/*
+	Creates a new tokeniser.
+
+	This method returns NULL on memory allocation errors.
+*/
 tokeniser *tokeniser_setup(FILE *);
 void tokeniser_free(tokeniser *);
 

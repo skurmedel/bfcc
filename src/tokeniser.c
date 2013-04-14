@@ -1,5 +1,3 @@
-#include "tokeniser.h"
-
 /*
 	Copyright (c) 2013, Simon Otter
 	All rights reserved.
@@ -24,11 +22,16 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "tokeniser.h"
 #include "stdlib.h"
 
 tokeniser *tokeniser_setup(FILE *f)
 {
 	tokeniser *t = malloc(sizeof(tokeniser));
+	
+	if (!f)
+		return NULL;
+
 	t->f = f;
 	return t;
 }
