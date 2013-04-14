@@ -122,7 +122,7 @@ char const *token_name(token t)
 
 		Let's save them if so.
 	*/
-	if (((int) t) > token_eof)
+	if (((unsigned int) t) > token_eof)
 	{
 		return "INVALID_TOKEN_ID";
 	}
