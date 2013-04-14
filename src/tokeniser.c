@@ -52,6 +52,12 @@ int tokeniser_next(tokeniser *t, token *tok)
 		if (err != 0)
 			goto error;
 
+		if (feof(f))
+		{
+			res = token_eof;
+			goto success;
+		}
+
 		switch ((char) c)
 		{
 			case '+':
@@ -116,7 +122,7 @@ char const *token_name(token t)
 
 		Let's save them if so.
 	*/
-	if (((int) t) >= token_eof)
+	if (((int) t) > token_eof)
 	{
 		return "INVALID_TOKEN_ID";
 	}
