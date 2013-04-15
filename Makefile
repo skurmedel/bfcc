@@ -15,7 +15,7 @@ $(SRC_DIR)/%.o: %.cpp
 	$(CC) -c $(CFLAGS) $< -o $@
 
 setup:
-	-echo "Setting up bin dir."
+	-@echo "Setting up bin dir."
 	-@mkdir bin
 
 clean:

@@ -47,7 +47,17 @@ asm_error asm_emit(asm_config *conf)
 	return err;
 }
 
+#define FWRITE(buf, len) fwrite(conf->f, (buf), (len))
+#define FPUTS(buf) fputs((buf), conf->f)
+
+
 static void asm_emit_gas(asm_config *conf, asm_error *err)
 {
+	/*
+ 		Keeps track of nesting, so that jumps can be
+		matched to their labels.
+	*/
+	int nesting = 0;
 
+	FPUTS(".text");
 }

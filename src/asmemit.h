@@ -66,11 +66,12 @@ typedef enum
 	asm_syntax_gas
 } asm_syntax;
 
-typedef token il_opcode;
+typedef token symbol;
+
 /*
 	Fetches the next IL opcode.
 */
-typedef il_opcode (*opcode_fetcher)(void *);
+typedef symbol (*symbol_fetcher)(void *);
 
 typedef struct asm_config_t
 {
@@ -78,7 +79,7 @@ typedef struct asm_config_t
 	asm_syntax syntax;
 	FILE *f;
 
-	opcode_fetcher fetch_opcode;
+	symbol_fetcher fetch_symbol;
 	void *userdata;
 } asm_config;
 
