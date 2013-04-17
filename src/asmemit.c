@@ -51,6 +51,21 @@ asm_error asm_emit(asm_config *conf)
 #define FPUTS(buf) fputs((buf), conf->f)
 
 
+static void asm_emit_gas_writec(
+	asm_config *conf, 
+	asm_error *err, 
+	int labeln,
+	char charval)
+{
+	FPUTS("	mov		$'a, %r9 \
+			mov		%r9, (writec_buf)");
+	fprintf(conf->f, "mov		$0x%x, %r9\n", labeln);
+	FPUTS(			 "mov		%r9, (writec_buf)");
+	fprintf(conf->f, "push		$Lwc%04d\n", labeln);
+	FPUTS(			 "jmp 		writec");
+	fprintf(conf->f, "Lwc%04d:", labeln);
+}
+
 static void asm_emit_gas(asm_config *conf, asm_error *err)
 {
 	/*
@@ -59,5 +74,39 @@ static void asm_emit_gas(asm_config *conf, asm_error *err)
 	*/
 	int nesting = 0;
 
-	FPUTS(".text");
+	/*
+		Prelude. Set up some global stuff.
+	*/
+	FPUTS(
+		"	.global _start	 \
+		.section .bss \
+			.comm	writec_buf, 1	 \
+		.section .text");
+
+	/*
+		Emit program.
+	*/
+	FPUTS(
+		"_start: \
+			mov		$'a, %r9 \
+			mov		%r9, (writec_buf) \
+		\
+			push	$L0 \
+			jmp		writec \
+		\
+		L0: \
+			mov		$60, %rax \
+			xor		%rdi, %rdi \
+			syscall");
+	/*
+		Emit predefined procedures.
+	*/
+	FPUTS(	
+		"writec: \
+			mov		$1, %rax \
+			mov		$1, %rdi \
+			mov		$writec_buf, %rsi \
+			mov		$1, %rdx	 \
+			syscall \
+			ret ");
 }
