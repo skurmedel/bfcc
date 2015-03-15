@@ -26,6 +26,7 @@
 #include <stdlib.h>
 
 #include "tokeniser.h"
+#include "backend.h"
 
 int main(int argc, char *argv[])
 {
@@ -35,10 +36,13 @@ int main(int argc, char *argv[])
 		f = fopen(argv[1], "r");
 		if (!f)
 		{
-			printf("Unknown file.\n");
+			fprintf(stderr, "Unknown file.\n");
 			return 1;
 		}
 	}
+
+	backend back = create_c99_backend();
+	back.begin(stdout);
 
 	tokeniser *t = tokeniser_setup(f);
 
@@ -50,15 +54,19 @@ int main(int argc, char *argv[])
 
 		if (error)
 		{
-			printf("Error detected: %d.\n", error);
+			fprintf(stderr,  "Error detected: %d.\n", error);
 			return 1;
 		}
-
-		printf("%s\n", token_name(tok));
-
 		if (tok == token_eof)
-			return 0;
-	}	
+			break;
+		
+		if (!back.emit(stdout, (token) tok))
+		{
+			fprintf(stderr, "Failure encountered when translating token: %s\n", token_name((token) tok));
+		}
+		//printf("%s\n", token_name(tok));
+	}
 
+	back.end(stdout);
 	return 0;
 }
