@@ -25,6 +25,11 @@
 #include "tokeniser.h"
 #include "stdlib.h"
 
+typedef struct tokeniser_t
+{
+	FILE *f;
+} tokeniser;
+
 tokeniser *tokeniser_setup(FILE *f)
 {
 	tokeniser *t = malloc(sizeof(tokeniser));

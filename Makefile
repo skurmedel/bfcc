@@ -21,3 +21,12 @@ setup:
 clean:
 	-@rm $(OBJECTS)
 	-@rm -rf bin
+
+help:
+	-@echo "Targets: all clean helloworld"
+
+helloworld: all
+	./bin/bfcc examples/helloworld.bf > helloworld.bf.c
+	gcc helloworld.bf.c -o helloworld
+
+.PHONY : all setup clean help

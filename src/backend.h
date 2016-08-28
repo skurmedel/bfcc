@@ -8,6 +8,7 @@
 #define BFCC_STACKSIZE	(32 * 1024)
 #define BFCC_OUTPUT		stdout
 
+// Todo: This doesn't support state.
 typedef struct backend_t
 {
 	/*
@@ -16,7 +17,7 @@ typedef struct backend_t
 
 		Does not need to be thread safe.
 
-		Should return 0 on failure.
+		Should return 0 on success.
 	*/
 	int (*begin)(FILE *output);
 	/*
@@ -24,7 +25,7 @@ typedef struct backend_t
 
 		Does not need to be thread safe.
 
-		Should return 0 on failure.
+		Should return 0 on success.
 	*/
 	int (*emit)(FILE *output, token t);
 	/*
@@ -32,7 +33,7 @@ typedef struct backend_t
 
 		Does not need to be thread safe.
 
-		Should return 0 on failure.
+		Should return 0 on success.
 	*/
 	int (*end)(FILE *output);
 } backend;

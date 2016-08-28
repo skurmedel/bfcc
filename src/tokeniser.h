@@ -31,10 +31,7 @@
 	#define NULL 0
 #endif
 
-typedef struct tokeniser_t
-{
-	FILE *f;
-} tokeniser;
+typedef struct tokeniser_t tokeniser;
 
 typedef enum token_t
 {

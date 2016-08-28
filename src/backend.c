@@ -22,12 +22,14 @@ int C99_begin(FILE *output)
 	fputs("#include <stdio.h>\nint main(int argc, char *argv[]) {\n", output);
 	fprintf(output, "\tchar %s[%d] = {0};\n", C99_STORAGE_NAME, BFCC_STACKSIZE);
 	fprintf(output, "\tchar *%s = %s;\n", C99_PTR_NAME, C99_STORAGE_NAME);
-	return ferror(output) != 0? 0 : 1;
+	return ferror(output);
 }
 
 int C99_emit(FILE *output, token t)
 {
-	fprintf(output, "\t// %s\n", token_name(t));
+#ifdef NDEBUG
+	fprintf(output, "\t// token: %s\n", token_name(t));
+#endif
 	switch (t)
 	{
 	case token_incr_ptr:
@@ -58,11 +60,11 @@ int C99_emit(FILE *output, token t)
 		fputs("\t// End of Program.", output);
 		break;
 	}
-	return ferror(output) != 0? 0 : 1;
+	return ferror(output);
 }
 
 int C99_end(FILE *output)
 {
-	fputs("\treturn 0;\n}", output);
-	return ferror(output) != 0? 0 : 1;
+	fputs("\treturn 0;\n}\n", output);
+	return ferror(output);
 }

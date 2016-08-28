@@ -28,8 +28,25 @@
 #include "tokeniser.h"
 #include "backend.h"
 
+#define ERROR_MEMORY_ALLOC		-1
+#define ERROR_FILE_NOT_FOUND	-2
+#define ERROR_TOKENISATION		-3
+#define ERROR_CODE_GEN			-4
+
+#define IS_ERROR(code) ((code) != 0)
+#define FATAL_IF_ERROR(code, info) if (IS_ERROR((code))) { \
+		printf("Fatal error (%s).\n", (info));\
+		return ERROR_CODE_GEN;\
+	}
+#define CHECK_ALLOCATION(ptr, info) if (ptr == NULL) { \
+		printf("Memory allocation failed (%s).\n", (info));\
+		return ERROR_MEMORY_ALLOC;\
+	}
+
 int main(int argc, char *argv[])
 {
+	int ecode;
+
 	FILE *f = stdin;
 	if (argc > 1)
 	{
@@ -37,36 +54,37 @@ int main(int argc, char *argv[])
 		if (!f)
 		{
 			fprintf(stderr, "Unknown file.\n");
-			return 1;
+			return ERROR_FILE_NOT_FOUND;
 		}
 	}
 
 	backend back = create_c99_backend();
-	back.begin(stdout);
+	ecode = back.begin(stdout);
+	FATAL_IF_ERROR(ecode, "Backend preamble generation");
 
 	tokeniser *t = tokeniser_setup(f);
+	CHECK_ALLOCATION(t, "Tokeniser setup");
 
-	int c = 0;
 	while (1)
 	{
 		token tok;
 		int error = tokeniser_next(t, &tok);
 
-		if (error)
+		if (IS_ERROR(error))
 		{
-			fprintf(stderr,  "Error detected: %d.\n", error);
-			return 1;
+			fprintf(stderr,  "Tokenisation error detected: %d.\n", error);
+			return ERROR_TOKENISATION;
 		}
 		if (tok == token_eof)
 			break;
 		
-		if (!back.emit(stdout, (token) tok))
+		if (IS_ERROR(back.emit(stdout, (token) tok)))
 		{
 			fprintf(stderr, "Failure encountered when translating token: %s\n", token_name((token) tok));
 		}
-		//printf("%s\n", token_name(tok));
 	}
 
-	back.end(stdout);
+	ecode = back.end(stdout);
+	FATAL_IF_ERROR(ecode, "Backend could not finish")
 	return 0;
 }
