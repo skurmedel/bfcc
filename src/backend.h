@@ -8,7 +8,7 @@
 #define BFCC_STACKSIZE	(32 * 1024)
 #define BFCC_OUTPUT		stdout
 
-// Todo: This doesn't support state.
+// Todo: This doesn't support state, we really want that in the future.
 typedef struct backend_t
 {
 	/*
