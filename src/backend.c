@@ -10,7 +10,7 @@ int C99_end(backend *me, FILE *output);
 
 extern void c99_options_default(c99_options *opts)
 {
-	opts->stack_size = BFCC_DEFAULT_STACKSIZE;
+	opts->buffer_size = BFCC_DEFAULT_BUFFERSIZE;
 }
 
 
@@ -35,9 +35,9 @@ int C99_begin(backend *me, FILE *output)
 	fputs("#include <stdlib.h>\n", output);
 	fputs("#include <string.h>\n", output);
 	fputs("int main(int argc, char *argv[]) {\n", output);
-	fprintf(output, "\tchar *%s = malloc(%d);\n", C99_STORAGE_NAME, opts->stack_size);
+	fprintf(output, "\tchar *%s = malloc(%d);\n", C99_STORAGE_NAME, opts->buffer_size);
 	fprintf(output, "\tif (%s == 0) { puts(\"E: Could not allocate storage.\"); return -1; }\n", C99_STORAGE_NAME);
-	fprintf(output, "\tmemset(%s, '\\0', %d);\n", C99_STORAGE_NAME, opts->stack_size);
+	fprintf(output, "\tmemset(%s, '\\0', %d);\n", C99_STORAGE_NAME, opts->buffer_size);
 	fprintf(output, "\tchar *%s = %s;\n", C99_PTR_NAME, C99_STORAGE_NAME);
 	return ferror(output);
 }

@@ -5,7 +5,7 @@
 
 #include "tokeniser.h"
 
-#define BFCC_DEFAULT_STACKSIZE		(32 * 1024)
+#define BFCC_DEFAULT_BUFFERSIZE		(32 * 1024)
 #define BFCC_C99_OUTPUT				stdout
 
 // Todo: This doesn't support state, we really want that in the future.
@@ -49,7 +49,7 @@ typedef struct backend_t
 */
 typedef struct c99_options_t 
 {
-	size_t 		stack_size;
+	size_t 		buffer_size;
 } c99_options;
 
 /*
