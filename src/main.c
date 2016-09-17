@@ -24,9 +24,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "tokeniser.h"
 #include "backend.h"
+#include "arguments.h"
 
 #define ERROR_MEMORY_ALLOC		-1
 #define ERROR_FILE_NOT_FOUND	-2
@@ -47,10 +49,16 @@ int main(int argc, char *argv[])
 {
 	int ecode;
 
-	FILE *f = stdin;
-	if (argc > 1)
+	bfcc_options bfopts = {0};
+	if (parse_arguments(argc, argv, &bfopts) != 0)
 	{
-		f = fopen(argv[1], "r");
+		return -2;
+	}
+
+	FILE *f = stdin;
+	if (bfopts.input_file != 0)
+	{
+		f = fopen(bfopts.input_file, "r");
 		if (!f)
 		{
 			fprintf(stderr, "Unknown file.\n");

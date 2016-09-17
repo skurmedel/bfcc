@@ -3,8 +3,10 @@ SOURCES=$(wildcard $(SRC_DIR)*.c)
 OBJECTS=$(patsubst %.c, %.o, $(SOURCES))
 bfcc=bin/bfcc
 
+SOURCES+=lib/parg/parg.c
+
 CC=gcc
-CFLAGS=-O2 -DNDEBUG -fomit-frame-pointer
+CFLAGS=-O2 -DNDEBUG -fomit-frame-pointer -Ilib/parg/
 
 all: setup $(bfcc)
 
