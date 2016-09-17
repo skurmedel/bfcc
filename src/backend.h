@@ -5,12 +5,18 @@
 
 #include "tokeniser.h"
 
-#define BFCC_STACKSIZE	(32 * 1024)
-#define BFCC_OUTPUT		stdout
+#define BFCC_DEFAULT_STACKSIZE		(32 * 1024)
+#define BFCC_C99_OUTPUT				stdout
 
 // Todo: This doesn't support state, we really want that in the future.
 typedef struct backend_t
 {
+	/*
+		An implementation specific piece of data that can hold settings,
+		state, and what not.
+	*/
+	void *state;
+
 	/*
 		Initializes the output stream with whatever data
 		is needed.
@@ -19,7 +25,7 @@ typedef struct backend_t
 
 		Should return 0 on success.
 	*/
-	int (*begin)(FILE *output);
+	int (*begin)(struct backend_t *me, FILE *output);
 	/*
 		Emits the necessary opcodes for the token t.
 
@@ -27,7 +33,7 @@ typedef struct backend_t
 
 		Should return 0 on success.
 	*/
-	int (*emit)(FILE *output, token t);
+	int (*emit)(struct backend_t *me, FILE *output, token t);
 	/*
 		Called after all the tokens have been emitted.
 
@@ -35,7 +41,7 @@ typedef struct backend_t
 
 		Should return 0 on success.
 	*/
-	int (*end)(FILE *output);
+	int (*end)(struct backend_t *me, FILE *output);
 } backend;
 
 /*

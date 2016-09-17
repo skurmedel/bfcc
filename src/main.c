@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 	}
 
 	backend back = create_c99_backend();
-	ecode = back.begin(stdout);
+	ecode = back.begin(&back, stdout);
 	FATAL_IF_ERROR(ecode, "Backend preamble generation");
 
 	tokeniser *t = tokeniser_setup(f);
@@ -78,13 +78,13 @@ int main(int argc, char *argv[])
 		if (tok == token_eof)
 			break;
 		
-		if (IS_ERROR(back.emit(stdout, (token) tok)))
+		if (IS_ERROR(back.emit(&back, stdout, (token) tok)))
 		{
 			fprintf(stderr, "Failure encountered when translating token: %s\n", token_name((token) tok));
 		}
 	}
 
-	ecode = back.end(stdout);
+	ecode = back.end(&back, stdout);
 	FATAL_IF_ERROR(ecode, "Backend could not finish")
 	return 0;
 }

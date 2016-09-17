@@ -1,8 +1,8 @@
 #include "backend.h"
 
-int C99_begin(FILE *output);
-int C99_emit(FILE *output, token t);
-int C99_end(FILE *output);
+int C99_begin(backend *me, FILE *output);
+int C99_emit(backend *me, FILE *output, token t);
+int C99_end(backend *me, FILE *output);
 
 #define C99_PTR_NAME		"p"
 #define C99_STORAGE_NAME	"storage"
@@ -10,6 +10,7 @@ int C99_end(FILE *output);
 backend create_c99_backend() 
 {
 	backend b = {
+		0,
 		&C99_begin,
 		&C99_emit,
 		&C99_end
@@ -17,15 +18,15 @@ backend create_c99_backend()
 	return b;
 }
 
-int C99_begin(FILE *output)
+int C99_begin(backend *me, FILE *output)
 {
 	fputs("#include <stdio.h>\nint main(int argc, char *argv[]) {\n", output);
-	fprintf(output, "\tchar %s[%d] = {0};\n", C99_STORAGE_NAME, BFCC_STACKSIZE);
+	fprintf(output, "\tchar %s[%d] = {0};\n", C99_STORAGE_NAME, BFCC_DEFAULT_STACKSIZE);
 	fprintf(output, "\tchar *%s = %s;\n", C99_PTR_NAME, C99_STORAGE_NAME);
 	return ferror(output);
 }
 
-int C99_emit(FILE *output, token t)
+int C99_emit(backend *me, FILE *output, token t)
 {
 #ifdef NDEBUG
 	fprintf(output, "\t// token: %s\n", token_name(t));
@@ -63,7 +64,7 @@ int C99_emit(FILE *output, token t)
 	return ferror(output);
 }
 
-int C99_end(FILE *output)
+int C99_end(backend *me, FILE *output)
 {
 	fputs("\treturn 0;\n}\n", output);
 	return ferror(output);
