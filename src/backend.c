@@ -1,4 +1,5 @@
 #include "backend.h"
+#include <assert.h>
 
 int C99_begin(backend *me, FILE *output);
 int C99_emit(backend *me, FILE *output, token t);
@@ -7,10 +8,18 @@ int C99_end(backend *me, FILE *output);
 #define C99_PTR_NAME		"p"
 #define C99_STORAGE_NAME	"storage"
 
-backend create_c99_backend() 
+extern void c99_options_default(c99_options *opts)
 {
+	opts->stack_size = BFCC_DEFAULT_STACKSIZE;
+}
+
+
+backend create_c99_backend(c99_options *opts) 
+{
+	assert(opts != 0);
+
 	backend b = {
-		0,
+		opts,
 		&C99_begin,
 		&C99_emit,
 		&C99_end
@@ -20,8 +29,9 @@ backend create_c99_backend()
 
 int C99_begin(backend *me, FILE *output)
 {
+	c99_options *opts = (c99_options *) me->state; 
 	fputs("#include <stdio.h>\nint main(int argc, char *argv[]) {\n", output);
-	fprintf(output, "\tchar %s[%d] = {0};\n", C99_STORAGE_NAME, BFCC_DEFAULT_STACKSIZE);
+	fprintf(output, "\tchar %s[%d] = {0};\n", C99_STORAGE_NAME, opts->stack_size);
 	fprintf(output, "\tchar *%s = %s;\n", C99_PTR_NAME, C99_STORAGE_NAME);
 	return ferror(output);
 }

@@ -58,7 +58,11 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	backend back = create_c99_backend();
+	c99_options opts;
+	c99_options_default(&opts);
+	
+	backend back = create_c99_backend(&opts);
+
 	ecode = back.begin(&back, stdout);
 	FATAL_IF_ERROR(ecode, "Backend preamble generation");
 

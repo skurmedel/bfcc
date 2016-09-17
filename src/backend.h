@@ -45,10 +45,23 @@ typedef struct backend_t
 } backend;
 
 /*
+	A structure that holds various options for the C99 backend.
+*/
+typedef struct c99_options_t 
+{
+	size_t 		stack_size;
+} c99_options;
+
+/*
+	Sets the default options for a C99 backend.
+*/
+extern void c99_options_default(c99_options *);
+
+/*
 	Creates a backend that generates C99 code and writes it to the 
 	output "executable". The C code can	then be compiled by, for 
 	example GCC and executed.
 */
-extern backend create_c99_backend();
+extern backend create_c99_backend(c99_options *);
 
 #endif
