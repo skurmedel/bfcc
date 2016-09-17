@@ -29,11 +29,7 @@
 #include "tokeniser.h"
 #include "backend.h"
 #include "arguments.h"
-
-#define ERROR_MEMORY_ALLOC		-1
-#define ERROR_FILE_NOT_FOUND	-2
-#define ERROR_TOKENISATION		-3
-#define ERROR_CODE_GEN			-4
+#include "errors.h"
 
 #define IS_ERROR(code) ((code) != 0)
 #define FATAL_IF_ERROR(code, info) if (IS_ERROR((code))) { \

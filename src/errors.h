@@ -22,33 +22,15 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef ARGUMENTS_H
-#define ARGUMENTS_H
+#ifndef ERRORS_H
+#define ERRORS_H
 
-#include "errors.h"
+#define ERROR_MEMORY_ALLOC		-1
+#define ERROR_FILE_NOT_FOUND	-2
+#define ERROR_TOKENISATION		-3
+#define ERROR_CODE_GEN			-4
 
-typedef struct bfcc_options_t
-{
-    /*
-        A brainfuck source file. If none were given, this value is 0.
-    */
-    char *input_file;
-} bfcc_options;
-
-/*
-    Tries to parse the command line options, and return the output.
-
-    If some options are wrong or incompatible, a message is printed
-    to stderr and this function returns ERROR_ARGUMENTS_WRONG.
-
-    If the help or version text was requested, this returns 
-    ERROR_ARGUMENTS_INFO_OUTPUT.
-
-    In both the above cases, result will be untouched.
-
-    If the arguments were well defined this function returns 0.
-*/
-int parse_arguments(int argc, char *argv[], bfcc_options *result);
+#define ERROR_ARGUMENTS_WRONG       -100
+#define ERROR_ARGUMENTS_INFO_OUTPUT -101
 
 #endif
-
