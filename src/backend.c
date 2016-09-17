@@ -30,8 +30,14 @@ backend create_c99_backend(c99_options *opts)
 int C99_begin(backend *me, FILE *output)
 {
 	c99_options *opts = (c99_options *) me->state; 
-	fputs("#include <stdio.h>\nint main(int argc, char *argv[]) {\n", output);
-	fprintf(output, "\tchar %s[%d] = {0};\n", C99_STORAGE_NAME, opts->stack_size);
+	
+	fputs("#include <stdio.h>\n", output);
+	fputs("#include <stdlib.h>\n", output);
+	fputs("#include <string.h>\n", output);
+	fputs("int main(int argc, char *argv[]) {\n", output);
+	fprintf(output, "\tchar *%s = malloc(%d);\n", C99_STORAGE_NAME, opts->stack_size);
+	fprintf(output, "\tif (%s == 0) { puts(\"E: Could not allocate storage.\"); return -1; }\n", C99_STORAGE_NAME);
+	fprintf(output, "\tmemset(%s, '\\0', %d);\n", C99_STORAGE_NAME, opts->stack_size);
 	fprintf(output, "\tchar *%s = %s;\n", C99_PTR_NAME, C99_STORAGE_NAME);
 	return ferror(output);
 }
