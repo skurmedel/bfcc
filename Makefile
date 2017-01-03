@@ -13,12 +13,12 @@ all: setup $(bfcc)
 $(bfcc): $(OBJECTS)
 	$(CC) $^ -o $@
 
-$(SRC_DIR)/%.o: %.cpp
+%.o: %.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
 setup:
 	-@echo "Setting up bin dir."
-	-@mkdir bin
+	-@mkdir -p bin
 
 clean:
 	-@rm $(OBJECTS)
