@@ -34,11 +34,11 @@
 #define IS_ERROR(code) ((code) != 0)
 #define FATAL_IF_ERROR(code, info) if (IS_ERROR((code))) { \
 		printf("Fatal error (%s).\n", (info));\
-		return ERROR_CODE_GEN;\
+		return BFCC_ERROR_CODE_GEN;\
 	}
 #define CHECK_ALLOCATION(ptr, info) if (ptr == NULL) { \
 		printf("Memory allocation failed (%s).\n", (info));\
-		return ERROR_MEMORY_ALLOC;\
+		return BFCC_ERROR_MEMORY_ALLOC;\
 	}
 
 int main(int argc, char *argv[])
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 		if (!f)
 		{
 			fprintf(stderr, "Unknown file.\n");
-			return ERROR_FILE_NOT_FOUND;
+			return BFCC_ERROR_FILE_NOT_FOUND;
 		}
 	}
 
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 		if (IS_ERROR(error))
 		{
 			fprintf(stderr,  "Tokenisation error detected: %d.\n", error);
-			return ERROR_TOKENISATION;
+			return BFCC_ERROR_TOKENISATION;
 		}
 		if (tok == token_eof)
 			break;

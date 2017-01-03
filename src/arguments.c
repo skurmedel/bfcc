@@ -20,10 +20,10 @@ int parse_arguments(int argc, char *argv[], bfcc_options *result)
                 break;
             case 'h':
                 puts("Usage bfcc [-h] [input file]");
-                return ERROR_ARGUMENTS_INFO_OUTPUT;
+                return BFCC_ERROR_ARGUMENTS_INFO_OUTPUT;
             default:
                 fprintf(stderr, "Unhandled option -%c.\n", c);
-                return ERROR_ARGUMENTS_WRONG;
+                return BFCC_ERROR_ARGUMENTS_WRONG;
         }
     }
     

@@ -39,10 +39,10 @@ typedef struct bfcc_options_t
     Tries to parse the command line options, and return the output.
 
     If some options are wrong or incompatible, a message is printed
-    to stderr and this function returns ERROR_ARGUMENTS_WRONG.
+    to stderr and this function returns BFCC_ERROR_ARGUMENTS_WRONG.
 
     If the help or version text was requested, this returns 
-    ERROR_ARGUMENTS_INFO_OUTPUT.
+    BFCC_ERROR_ARGUMENTS_INFO_OUTPUT.
 
     In both the above cases, result will be untouched.
 
