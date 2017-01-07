@@ -51,7 +51,7 @@ typedef enum token_t
 
 	This method returns NULL on memory allocation errors.
 */
-tokeniser *tokeniser_setup(FILE *);
+tokeniser *tokeniser_setup_with_stream(FILE *);
 void tokeniser_free(tokeniser *);
 
 /*

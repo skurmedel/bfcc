@@ -30,7 +30,7 @@ typedef struct tokeniser_t
 	FILE *f;
 } tokeniser;
 
-tokeniser *tokeniser_setup(FILE *f)
+tokeniser *tokeniser_setup_with_stream(FILE *f)
 {
 	tokeniser *t = malloc(sizeof(tokeniser));
 	

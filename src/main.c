@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 	ecode = back.begin(&back, stdout);
 	FATAL_IF_ERROR(ecode, "Backend preamble generation");
 
-	tokeniser *t = tokeniser_setup(f);
+	tokeniser *t = tokeniser_setup_with_stream(f);
 	CHECK_ALLOCATION(t, "Tokeniser setup");
 
 	while (1)

@@ -25,10 +25,10 @@ setup:
 	-@mkdir -p bin
 
 clean:
-	-@rm $(OBJECTS)
-	-@rm -rf bin
-	-@rm $(TEST_OBJECTS)
-	-@rm $(TESTS)
+	@rm -f $(OBJECTS)
+	@rm -rf bin
+	@rm -f $(TEST_OBJECTS)
+	@rm -f $(TESTS)
 
 help:
 	-@echo "Targets: all clean helloworld"
