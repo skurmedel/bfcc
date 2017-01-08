@@ -99,6 +99,15 @@ void tokeniser_free(tokeniser *);
 */
 int tokeniser_next(tokeniser *, token *);
 
+/*
+	Returns the name of a token. If the token is outside the range of the enum
+	it returns INVALID_TOKEN_ID.
+
+	Example:
+
+		puts(token_name(token_incr_ptr)) // outputs "incr_ptr"
+
+*/
 char const *token_name(token);
 
 #endif
