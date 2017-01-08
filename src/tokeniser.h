@@ -101,7 +101,7 @@ int tokeniser_next(tokeniser *, token *);
 
 /*
 	Returns the name of a token. If the token is outside the range of the enum
-	it returns INVALID_TOKEN_ID.
+	it returns "INVALID_TOKEN_ID".
 
 	Example:
 
