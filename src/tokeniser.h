@@ -35,13 +35,21 @@ typedef struct tokeniser_t tokeniser;
 
 typedef enum token_t
 {
+	/* > */
 	token_incr_ptr,
+	/* < */
 	token_decr_ptr,
+	/* + */
 	token_incr,
+	/* - */
 	token_decr,
+	/* . */
 	token_output,
+	/* , */
 	token_input,
+	/* [ */
 	token_jump_fwd,
+	/* ] */
 	token_jump_back,
 	token_eof
 } token;
