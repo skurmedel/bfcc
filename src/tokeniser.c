@@ -25,19 +25,33 @@
 #include "tokeniser.h"
 #include "stdlib.h"
 
+static int stream_reader(int *c, void *reader_state)
+{
+	FILE *f = (FILE *) reader_state;
+	*c = fgetc(f);
+	return ferror(f);
+}
+
 typedef struct tokeniser_t
 {
-	FILE *f;
+	tokeniser_reader reader;
+	void *reader_state;
 } tokeniser;
 
 tokeniser *tokeniser_setup_with_stream(FILE *f)
 {
-	tokeniser *t = malloc(sizeof(tokeniser));
-	
 	if (!f)
 		return NULL;
+	
+	return tokeniser_setup(stream_reader, f);
+}
 
-	t->f = f;
+tokeniser *tokeniser_setup(tokeniser_reader reader, void *reader_state)
+{
+	tokeniser *t = malloc(sizeof(tokeniser));
+		
+	t->reader_state = reader_state;
+	t->reader = reader;
 	return t;
 }
 
@@ -48,23 +62,22 @@ void tokeniser_free(tokeniser *t)
 
 int tokeniser_next(tokeniser *t, token *tok)
 {
-	FILE *f = t->f;
 	int err;
 	token res;
 
 	while (1)
 	{
-		int c = fgetc(f);
-		err = ferror(f);
+		int c;
+		err = t->reader(&c, t->reader_state);
 
-		if (err != 0)
-			goto error;
-
-		if (feof(f))
+		if (c == EOF && err == EOF)
 		{
 			res = token_eof;
 			goto success;
 		}
+		
+		if (err != 0)
+			goto error;
 
 		switch ((char) c)
 		{

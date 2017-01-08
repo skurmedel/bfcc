@@ -47,11 +47,34 @@ typedef enum token_t
 } token;
 
 /*
-	Creates a new tokeniser.
+	Represents a reader function used by the tokeniser.
+
+	Puts the read character into c. On EOF, c should be set to EOF.
+
+	It should return a ferror compatible error code. End of input is marked with
+	an EOF.
+*/
+typedef int (*tokeniser_reader)(int *c, void *reader_state);
+
+/*
+	Creates a new tokeniser that reads from the given stream.
 
 	This method returns NULL on memory allocation errors.
 */
 tokeniser *tokeniser_setup_with_stream(FILE *);
+
+/*
+	Creates a new tokeniser that gets character input from the given function.
+
+	Will be called repeatedly with the given reader_state until EOF is returned.
+
+	This method returns NULL on memory allocation errors.
+*/
+tokeniser *tokeniser_setup(tokeniser_reader, void *);
+
+/*
+	Frees the tokeniser allocated with tokeniser_setup.
+*/
 void tokeniser_free(tokeniser *);
 
 /*
