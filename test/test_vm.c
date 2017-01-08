@@ -278,7 +278,6 @@ void test_vm_step_op_jmpfifz_jumps_on_zero(void)
     VM_TEARDOWN; 
 }
 
-
 void test_vm_step_op_jmpbifz_segfaults_on_too_large_arg(void)
 {
     VM_SETUP;
